@@ -137,7 +137,7 @@ jobs:
                   artifacts: "./system.json, ./system.zip"
                   tag: ${{ github.event.release.tag_name }}
                   body: ${{ github.event.release.body }}
-            - name: Publish System to FoundryVTT Website
+#            - name: Publish System to FoundryVTT Website
 #              id: publish-to-foundry-website
 #              uses: cs96and/FoundryVTT-release-package@v1
 #              with:
