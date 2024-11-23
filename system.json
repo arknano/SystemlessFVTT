@@ -23,7 +23,7 @@
   "version": "1.0.0",
   "compatibility": {
     "minimum": 11,
-    "verified": "11.315"
+    "verified": "12.331"
   },
   "esmodules": ["module/systemless.mjs"],
   "styles": ["css/systemless.css"],
