@@ -6,11 +6,6 @@
 export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
     // Actor partials.
-    'systems/systemless/templates/actor/parts/actor-features.hbs',
-    'systems/systemless/templates/actor/parts/actor-items.hbs',
-    'systems/systemless/templates/actor/parts/actor-spells.hbs',
-    'systems/systemless/templates/actor/parts/actor-effects.hbs',
-    // Item partials
-    'systems/systemless/templates/item/parts/item-effects.hbs',
+    'systems/systemless/templates/actor/parts/actor-items.hbs'
   ]);
 };

@@ -1,8 +1,3 @@
-import {
-  onManageActiveEffect,
-  prepareActiveEffectCategories,
-} from '../helpers/effects.mjs';
-
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -18,7 +13,7 @@ export class SystemlessActorSheet extends ActorSheet {
         {
           navSelector: '.sheet-tabs',
           contentSelector: '.sheet-body',
-          initial: 'features',
+          initial: 'description',
         },
       ],
     });
@@ -26,7 +21,7 @@ export class SystemlessActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/systemless/templates/actor/actor-${this.actor.type}-sheet.hbs`;
+    return `systems/systemless/templates/actor/actor-sheet.hbs`;
   }
 
   /* -------------------------------------------- */
@@ -50,14 +45,9 @@ export class SystemlessActorSheet extends ActorSheet {
     context.config = CONFIG.SYSTEMLESS;
 
     // Prepare character data and items.
-    if (actorData.type == 'character') {
+    if (actorData.type == 'actor') {
       this._prepareItems(context);
-      this._prepareCharacterData(context);
-    }
-
-    // Prepare NPC data and items.
-    if (actorData.type == 'npc') {
-      this._prepareItems(context);
+      this._prepareActorData(context);
     }
 
     // Enrich biography info for display
@@ -76,13 +66,6 @@ export class SystemlessActorSheet extends ActorSheet {
       }
     );
 
-    // Prepare active effects
-    context.effects = prepareActiveEffectCategories(
-      // A generator that returns all effects stored on the actor
-      // as well as any items
-      this.actor.allApplicableEffects()
-    );
-
     return context;
   }
 
@@ -91,7 +74,7 @@ export class SystemlessActorSheet extends ActorSheet {
    *
    * @param {object} context The context object to mutate
    */
-  _prepareCharacterData(context) {
+  _prepareActorData(context) {
     // This is where you can enrich character-specific editor fields
     // or setup anything else that's specific to this type
   }
@@ -104,19 +87,6 @@ export class SystemlessActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     const gear = [];
-    const features = [];
-    const spells = {
-      0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: [],
-    };
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -125,25 +95,13 @@ export class SystemlessActorSheet extends ActorSheet {
       if (i.type === 'item') {
         gear.push(i);
       }
-      // Append to features.
-      else if (i.type === 'feature') {
-        features.push(i);
-      }
-      // Append to spells.
-      else if (i.type === 'spell') {
-        if (i.system.spellLevel != undefined) {
-          spells[i.system.spellLevel].push(i);
-        }
-      }
     }
 
     // Assign and return
     context.gear = gear;
-    context.features = features;
-    context.spells = spells;
-  }
 
   /* -------------------------------------------- */
+  }
 
   /** @override */
   activateListeners(html) {
@@ -181,9 +139,6 @@ export class SystemlessActorSheet extends ActorSheet {
       onManageActiveEffect(ev, document);
     });
 
-    // Rollable abilities.
-    html.on('click', '.rollable', this._onRoll.bind(this));
-
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
@@ -220,37 +175,5 @@ export class SystemlessActorSheet extends ActorSheet {
 
     // Finally, create the item!
     return await Item.create(itemData, { parent: this.actor });
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-
-    // Handle item rolls.
-    if (dataset.rollType) {
-      if (dataset.rollType == 'item') {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
-        if (item) return item.roll();
-      }
-    }
-
-    // Handle rolls that supply the formula directly.
-    if (dataset.roll) {
-      let label = dataset.label ? `[ability] ${dataset.label}` : '';
-      let roll = new Roll(dataset.roll, this.actor.getRollData());
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label,
-        rollMode: game.settings.get('core', 'rollMode'),
-      });
-      return roll;
-    }
-  }
+  };
 }

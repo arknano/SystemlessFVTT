@@ -1,8 +1,3 @@
-import {
-  onManageActiveEffect,
-  prepareActiveEffectCategories,
-} from '../helpers/effects.mjs';
-
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -28,11 +23,11 @@ export class SystemlessItemSheet extends ItemSheet {
   get template() {
     const path = 'systems/systemless/templates/item';
     // Return a single sheet for all item types.
-    // return `${path}/item-sheet.hbs`;
+    return `${path}/item-sheet.hbs`;
 
     // Alternatively, you could use the following return statement to do a
     // unique item sheet by type, like `weapon-sheet.hbs`.
-    return `${path}/item-${this.item.type}-sheet.hbs`;
+    // return `${path}/item-${this.item.type}-sheet.hbs`;
   }
 
   /* -------------------------------------------- */
@@ -68,9 +63,6 @@ export class SystemlessItemSheet extends ItemSheet {
     // Adding a pointer to CONFIG.SYSTEMLESS
     context.config = CONFIG.SYSTEMLESS;
 
-    // Prepare active effects for easier access
-    context.effects = prepareActiveEffectCategories(this.item.effects);
-
     return context;
   }
 
@@ -85,9 +77,5 @@ export class SystemlessItemSheet extends ItemSheet {
 
     // Roll handlers, click handlers, etc. would go here.
 
-    // Active Effect management
-    html.on('click', '.effect-control', (ev) =>
-      onManageActiveEffect(ev, this.item)
-    );
   }
 }
