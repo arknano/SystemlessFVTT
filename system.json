@@ -8,10 +8,10 @@
       "discord": "grafeisen"
     }
   ],
-  "url": "Replace this with a link to your public repository",
+  "url": "https://github.com/arknano/SystemlessFVTT",
   "license": "LICENSE.txt",
   "readme": "README.md",
-  "bugs": "Replace this with a link to file issues or tickets",
+  "bugs": "https://github.com/arknano/SystemlessFVTT/issues",
   "changelog": "CHANGELOG.md",
   "media": [
     {
@@ -20,7 +20,7 @@
       "thumbnail": "systems/systemless/assets/anvil-impact.png"
     }
   ],
-  "version": "2.0.0",
+  "version": "1.0.0",
   "compatibility": {
     "minimum": 11,
     "verified": "11.315"
