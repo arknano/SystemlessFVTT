@@ -107,15 +107,15 @@ jobs:
                     `# The name of the output file`      \
                      ./system.zip                        \
                     `# The files that will be included.` \
-                    fonts/                               \
-                    images/                              \
+                    assets/                              \
+                    css/                                 \
                     lang/                                \
                     lib/                                 \
-                    modules/                             \
-                    styles/                              \
+                    module/                              \
+                    packs/                               \
+                    src/scss/                            \
                     templates/                           \
                     CHANGELOG.md                         \
-                    CONTRIBUTING.md                      \
                     LICENSE.txt                          \
                     README.md                            \
                     package.json                         \
